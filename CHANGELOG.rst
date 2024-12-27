@@ -4,8 +4,11 @@ Changelog
 2.0.2 - Unreleased
 ------------------
 
+- Add support for Python 3.12 and 3.13.
+
 - Fix devpi import/export
   [amoutaux (Aurélien Moutaux)]
+
 
 2.0.1 - 2023-03-18
 ------------------
