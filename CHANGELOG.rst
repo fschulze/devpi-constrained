@@ -1,8 +1,11 @@
 Changelog
 =========
 
-2.0.2 - Unreleased
+2.1.0 - Unreleased
 ------------------
+
+- Rudimentary support for legacy (non PEP440) versions.
+  [fschulze]
 
 - Require devpi-server >= 6.9.0.
   [fschulze]

@@ -115,3 +115,13 @@ Create a file ``constraints.txt`` with each constraint in one line::
 Set the ``constraints`` option on your index from the file::
 
     $ devpi index constraints="$(cat constraints.txt)"
+
+
+Legacy versions
+---------------
+
+Support for legacy (non `PEP440 <https://peps.python.org/pep-0440/>`_) versions is limited.
+When the constraint contains any filtering on the version, then no legacy version will pass.
+Technically legacy versions sort before any PEP440 compliant version,
+but the ``packaging`` library doesn't expose the operator publicly in an easily usable way,
+so this compromise was chosen to not have to deal with possibly changing internals.

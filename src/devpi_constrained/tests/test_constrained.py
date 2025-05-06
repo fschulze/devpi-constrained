@@ -114,7 +114,8 @@ def test_default_no_block(constrainedindex, mapp, simpypi, testapp):
     add_proj_versions(simpypi, [
         ('devpi', '1.0b2'),
         ('pkg', '1.1'),
-        ('pkg', '2.0')])
+        ('pkg', '2.0'),
+        ('pytz', '2004d')])
     r = testapp.get(constrainedindex.simpleindex)
     assert "devpi/" in r.text
     assert "pkg/" in r.text
@@ -149,7 +150,8 @@ def test_single_package(constrainedindex, mapp, simpypi, testapp):
     add_proj_versions(simpypi, [
         ('devpi', '1.0b2'),
         ('pkg', '1.1'),
-        ('pkg', '2.0')])
+        ('pkg', '2.0'),
+        ('pytz', '2004d')])
     r = testapp.patch_json(constrainedindex.index, [
         'constraints=pkg'])
     assert r.json['result']['constraints'] == ['pkg']
@@ -170,7 +172,8 @@ def test_single_package_all(constrainedindex, mapp, simpypi, testapp):
     add_proj_versions(simpypi, [
         ('devpi', '1.0b2'),
         ('pkg', '1.1'),
-        ('pkg', '2.0')])
+        ('pkg', '2.0'),
+        ('pytz', '2004d')])
     r = testapp.patch_json(constrainedindex.index, [
         'constraints=pkg\n*'])
     assert r.json['result']['constraints'] == ['pkg', '*']
@@ -194,7 +197,8 @@ def test_simple_projects_multiple(constrainedindex, mapp, simpypi, testapp):
         ('pkg', '1.1'),
         ('pkg', '2.0'),
         ('hello', '1.0'),
-        ('hello', '1.1')])
+        ('hello', '1.1'),
+        ('pytz', '2004d')])
     r = testapp.patch_json(constrainedindex.index, [
         'constraints=devpi\npkg'])
     assert r.json['result']['constraints'] == ['devpi', 'pkg']
@@ -222,7 +226,8 @@ def test_simple_projects_multiple_all(constrainedindex, mapp, simpypi, testapp):
         ('pkg', '1.1'),
         ('pkg', '2.0'),
         ('hello', '1.0'),
-        ('hello', '1.1')])
+        ('hello', '1.1'),
+        ('pytz', '2004d')])
     r = testapp.patch_json(constrainedindex.index, [
         'constraints=devpi\npkg\n*'])
     assert r.json['result']['constraints'] == ['devpi', 'pkg', '*']
@@ -250,7 +255,8 @@ def test_simple_projects_all(constrainedindex, mapp, simpypi, testapp):
         ('pkg', '1.1'),
         ('pkg', '2.0'),
         ('hello', '1.0'),
-        ('hello', '1.1')])
+        ('hello', '1.1'),
+        ('pytz', '2004d')])
     r = testapp.patch_json(constrainedindex.index, [
         'constraints=*'])
     assert r.json['result']['constraints'] == ['*']
@@ -269,7 +275,7 @@ def test_simple_projects_all(constrainedindex, mapp, simpypi, testapp):
 
 @pytest.mark.parametrize("constrain_all", (False, True))
 @pytest.mark.parametrize("constraint,expected", [
-    ('pkg', ['1.0', '1.1', '2.0']),
+    ('pkg', ['2004d', '1.0', '1.1', '2.0']),
     ('pkg>=2', ['2.0']),
     ('pkg<2', ['1.0', '1.1']),
     ('pkg~=1.0', ['1.0', '1.1']),
@@ -278,6 +284,7 @@ def test_simple_projects_all(constrainedindex, mapp, simpypi, testapp):
     ('pkg==1.1', ['1.1'])])
 def test_versions(constrainedindex, constraint, expected, constrain_all, mapp, simpypi, testapp):
     add_proj_versions(simpypi, [
+        ('pkg', '2004d'),  # legacy non PEP440
         ('pkg', '1.0'),
         ('pkg', '1.1'),
         ('pkg', '2.0')])

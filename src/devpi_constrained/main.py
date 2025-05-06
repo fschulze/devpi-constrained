@@ -1,6 +1,8 @@
 from devpi_common.metadata import parse_requirement, splitext_archive
 from devpi_common.types import cached_property
 from devpi_common.validation import normalize_name
+from packaging_legacy.version import LegacyVersion
+from packaging_legacy.version import parse as parse_version
 from pluggy import HookimplMarker
 import pkg_resources
 
@@ -75,14 +77,25 @@ class ConstrainedStage(object):
         version_filter = self.constraints.get(project)
         if version_filter is None:
             return
+        # when there is no filter, we let legacy versions pass through
+        include_legacy = not len(version_filter)
         for version in versions:
-            yield version in version_filter
+            parsed_version = parse_version(version) if isinstance(version, str) else version
+            if isinstance(parsed_version, LegacyVersion):
+                # legacy versions always compare less then any other versions
+                # we don't have access to the internals of the filtering,
+                # so we filter all legacy versions unless there is no filter
+                yield include_legacy
+            else:
+                yield parsed_version in version_filter
 
     def get_simple_links_filter_iter(self, project, links):
         constraints = self.constraints
         version_filter = constraints.get(project)
         if version_filter is None:
             return
+        # when there is no filter, we let legacy versions pass through
+        include_legacy = not len(version_filter)
         for link_info in links:
             if isinstance(link_info, tuple):
                 key = link_info[0]
@@ -100,10 +113,15 @@ class ConstrainedStage(object):
             else:
                 if link_info.name != project:
                     continue
-                if link_info.version in version_filter:
-                    yield True
+                version = link_info.version
+                parsed_version = parse_version(version) if isinstance(version, str) else version
+                if isinstance(parsed_version, LegacyVersion):
+                    # legacy versions always compare less then any other versions
+                    # we don't have access to the internals of the filtering,
+                    # so we filter all legacy versions unless there is no filter
+                    yield include_legacy
                 else:
-                    yield False
+                    yield parsed_version in version_filter
 
 
 @server_hookimpl
