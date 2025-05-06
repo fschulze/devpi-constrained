@@ -4,6 +4,9 @@ Changelog
 2.0.2 - Unreleased
 ------------------
 
+- Require devpi-server >= 6.9.0.
+  [fschulze]
+
 - Add support for Python 3.12 and 3.13.
   [fschulze]
 
