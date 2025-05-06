@@ -5,6 +5,7 @@ Changelog
 ------------------
 
 - Add support for Python 3.12 and 3.13.
+  [fschulze]
 
 - Fix devpi import/export
   [amoutaux (Aurélien Moutaux)]
@@ -21,10 +22,13 @@ Changelog
 ------------------
 
 - Remove support for Python <= 3.6.
+  [fschulze]
 
 - Add testing for Python 3.8, 3.9, 3.10, 3.11 and PyPy-3.7.
+  [fschulze]
 
 - Require devpi-server >= 6.2.0.
+  [fschulze]
 
 
 1.0.0 - 2019-08-05
