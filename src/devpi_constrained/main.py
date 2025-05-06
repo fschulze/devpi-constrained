@@ -25,7 +25,7 @@ def parse_constraints(constraints):
                 "%s for %r" % (e, constraint))
         if constraint.project_name in result:
             raise ValueError("Constraint for '%s' already exists." % constraint.project_name)
-        result[constraint.project_name] = constraint
+        result[constraint.project_name] = constraint.specifier
     return result
 
 
